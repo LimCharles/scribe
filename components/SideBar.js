@@ -11,9 +11,9 @@ const SideBar = (props) => {
   ];
 
   return (
-    <div className="flex">
+    <div className="flex flex-row">
       <div
-        className={`w-48 bg-gradient-to-b from-[#00916E] via-[#00916E] to-[#C3EC83] h-screen px-5 pt-5 relative duration-300 flex flex-col`}
+        className={`w-48 bg-gradient-to-b from-[#00916E] via-[#00916E] min-h-screen to-[#C3EC83] px-5 pt-5 relative duration-300 flex flex-col`}
       >
         <ul className="name">
           {Menus.map((item, index) => (

@@ -1,13 +1,12 @@
 import { FileUploader } from "react-drag-drop-files";
 import { useState } from "react";
-import { Upload } from "react-feather";
+import { Upload, ArrowRight } from "react-feather";
 import Switch from "react-switch";
 
 import NavBar from "#components/NavBar";
 import SideBar from "#components/SideBar";
 import DroppablePDF from "#components/DroppablePDF";
 import DraggablePDF from "#components/DraggablePDF";
-import ChatBox from "#components/ChatBox";
 
 export async function getServerSideProps(context) {
   const modelName = "Philo 13";
@@ -41,13 +40,32 @@ const Home = (props) => {
     setChecked(nextChecked);
   };
 
+  // Notes of user
+  const [notes, setNotes] = useState("");
+  const handleNotesChange = (e) => {
+    setNotes(e.target.value);
+  };
   return (
-    <div className="w-full h-screen">
+    <div className="w-full h-screen overflow-hidden">
       <NavBar />
       <SideBar>
-        <div className="w-full h-full py-8 px-16">
-          <p className="text-4xl font-quicksand">{modelName}</p>
-          <div className="grid grid-cols-3 gap-8 mt-8">
+        <div className="w-full h-full py-8 px-8">
+          <div className="flex flex-row justify-between items-center">
+            <p className="text-4xl font-quicksand">{modelName}</p>
+            <a
+              href="#_"
+              className="relative inline-flex items-center justify-center px-6 py-2 overflow-hidden font-medium transition duration-300 ease-out border-2 border-[#5B2A86] hover:border-opacity-0 rounded-full shadow-md group"
+            >
+              <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-[#5B2A86] group-hover:translate-x-0 ease">
+                <ArrowRight size={20} />
+              </span>
+              <span className="absolute flex items-center justify-center w-full h-full text-[#5B2A86] transition-all duration-300 transform group-hover:translate-x-full ease">
+                Proceed
+              </span>
+              <span className="relative invisible">Proceed</span>
+            </a>
+          </div>
+          <div className="grid grid-cols-3 gap-8 mt-8 h-full">
             <div className="flex flex-col gap-4">
               <div className="flex flex-row justify-between items-center">
                 <p className="font-quicksand font-medium text-base">
@@ -60,7 +78,6 @@ const Home = (props) => {
                   <Switch onChange={handleNotes} checked={checked} />
                 </div>
               </div>
-
               <FileUploader
                 handleChange={handleFileChange}
                 name="file"
@@ -71,41 +88,50 @@ const Home = (props) => {
                   <p className="font-inter text-sm">Upload PDFs</p>
                 </div>
               </FileUploader>
-              <DroppablePDF
-                name="pdfs"
-                className="p-4 border-[#5B2A86] border-opacity-30 border-[1px] rounded-xl min-h-[300px] gap-4 flex flex-col"
-              >
-                {files.map((file) => {
-                  return (
-                    <DraggablePDF
-                      key={file.name}
-                      fileName={file.name}
-                      onDelete={() => {
-                        onDelete(file.name);
-                      }}
-                    />
-                  );
-                })}
-              </DroppablePDF>
               <a
                 href="#_"
-                className="px-5 py-2.5 relative rounded group text-white font-medium inline-block"
+                class="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-bold text-black hover:text-white rounded-md shadow-2xl group"
               >
-                <span className="absolute top-0 left-0 w-full h-full rounded opacity-50 filter blur-sm bg-gradient-to-br from-[#00916E] to-[#9CFF29]"></span>
-                <span className="h-full w-full inset-0 absolute mt-0.5 ml-0.5 bg-gradient-to-br filter group-active:opacity-0 rounded opacity-50 from-[#00916E] to-[#C3EC83]"></span>
-                <span className="absolute inset-0 w-full h-full transition-all duration-200 ease-out rounded shadow-xl bg-gradient-to-br filter group-active:opacity-0 group-hover:blur-sm from-[#00916E] to-[#C3EC83]"></span>
-                <span className="absolute inset-0 w-full h-full transition duration-200 ease-out rounded bg-gradient-to-br from-[#00916E] to-[#9CFF29"></span>
-                <span className="relative font-inter center">
-                  Train your model
-                </span>
+                <span class="absolute inset-0 w-full h-full transition duration-300 ease-out opacity-0 bg-gradient-to-br bg-[#5B2A86] group-hover:opacity-100"></span>
+                <span class="absolute top-0 left-0 w-full bg-gradient-to-b from-[#360568] to-transparent opacity-10 h-1/3 group-hover:opacity-0"></span>
+                <span class="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-[#360568] to-transparent opacity-10 group-hover:opacity-0"></span>
+                <span class="absolute bottom-0 left-0 w-4 h-full bg-gradient-to-r from-[#360568] to-transparent opacity-10 group-hover:opacity-0"></span>
+                <span class="absolute bottom-0 right-0 w-4 h-full bg-gradient-to-l from-[#360568] to-transparent opacity-10 group-hover:opacity-0"></span>
+                <span class="absolute inset-0 w-full h-full border-2 border-[#5B2A86] group-hover:border-opacity-0 rounded-md"></span>
+                <span class="absolute w-0 h-0 transition-all duration-300 ease-out bg-black rounded-full group-hover:w-56 group-hover:h-56 opacity-5"></span>
+                <span class="relative">Train Model</span>
               </a>
+              <div className="border-[#5B2A86] border-opacity-30 border-[1px] rounded-xl overflow-hidden">
+                <DroppablePDF
+                  name="pdfs"
+                  className="p-4 h-48 gap-4 flex flex-col overflow-y-auto"
+                >
+                  {files.map((file) => {
+                    return (
+                      <DraggablePDF
+                        key={file.name}
+                        fileName={file.name}
+                        onDelete={() => {
+                          onDelete(file.name);
+                        }}
+                      />
+                    );
+                  })}
+                </DroppablePDF>
+              </div>
             </div>
-            <div className="col-span-2 flex flex-col gap-8">
+            <div className="col-span-2 flex flex-col gap-3">
               <p className="font-quicksand font-medium text-2xl">
-                Chat with your model
+                Copy your notes here
               </p>
 
-              <ChatBox />
+              <textarea
+                style={{
+                  resize: "none",
+                }}
+                onChange={handleNotesChange}
+                className="h-full bg-slate-50 border-[1px] border-[#5B2A86] border-opacity-30 rounded-xl p-4 focus:outline-none font-inter"
+              />
             </div>
           </div>
         </div>
