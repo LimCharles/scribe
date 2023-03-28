@@ -8,7 +8,7 @@ const DraggablePDF = (props) => {
   const formattedFileName =
     fileName.length > 30 ? fileName.slice(0, 30) + "..." : fileName;
   return (
-    <div className="transition-all duration-100 ease-out p-4 flex flex-row shadow-lg items-center border-[1px] justify-between rounded-xl bg-white border-[#5B2A86] border-opacity-30">
+    <div className="transition-all duration-100 ease-out p-4 flex flex-row shadow-lg items-center border-[1px] justify-between rounded-xl bg-white border-[#5B2A86] border-opacity-50">
       <div className="flex flex-row items-center gap-4">
         <FileText />
         <p className="font-inter font-base text-sm">{formattedFileName}</p>

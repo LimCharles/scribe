@@ -7,7 +7,9 @@ const AppPage = (props) => {
     <>
       <NavBar />
       <SideBar>
-        <div className="w-full h-full py-8 px-8 z-10">{children}</div>
+        <div className="w-full h-full flex flex-col py-8 px-8 z-10">
+          {children}
+        </div>
       </SideBar>
     </>
   );

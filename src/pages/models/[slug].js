@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import AppPage from "#components/AppPage";
 import DroppablePDF from "#components/DroppablePDF";
 import DraggablePDF from "#components/DraggablePDF";
+import ChatBox from "#components/ChatBox";
 
 export async function getServerSideProps(context) {
   const modelName = "Philo 13";
@@ -57,41 +58,47 @@ const ModelPage = (props) => {
   };
 
   return (
-    <div className="w-full h-screen overflow-hidden">
+    <div className="w-full h-screen flex flex-col overflow-hidden">
       <AppPage>
         <AnimatePresence mode="popLayout">
           {doneTraining ? (
             <motion.div
               key={"chat"}
-              initial={{ x: -400, y: 0, opacity: 0 }}
+              initial={{ x: -1000, y: 0, opacity: 0 }}
               animate={{ x: 0, y: 0, opacity: 1 }}
-              exit={{ x: -400, y: 0, opacity: 0 }}
-              transition={{ type: "spring", bounce: 0.25 }}
-              className="flex flex-row items-center"
+              exit={{ x: -1000, y: 0, opacity: 0 }}
+              transition={{
+                type: "spring",
+                bounce: 0,
+              }}
+              className="flex flex-col gap-8 h-full"
             >
-              <a
-                onClick={() => {
-                  handleProceed();
-                }}
-                className="cursor-pointer relative inline-flex items-center justify-center px-6 py-2 overflow-hidden font-medium transition duration-300 ease-out border-[1px] border-[#5B2A86] hover:border-opacity-0 rounded-full shadow-md group"
-              >
-                <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 translate-x-full bg-[#5B2A86] group-hover:translate-x-0 ease">
-                  <ArrowLeft size={20} />
-                </span>
-                <span className="absolute flex items-center justify-center w-full h-full text-[#5B2A86] transition-all duration-300 transform group-hover:-translate-x-full ease">
-                  Return
-                </span>
-                <span className="relative invisible">Return</span>
-              </a>
+              <div>
+                <a
+                  onClick={() => {
+                    handleProceed();
+                  }}
+                  className="cursor-pointer relative inline-flex items-center justify-center px-6 py-2 overflow-hidden font-medium transition duration-300 ease-out border-[1px] border-[#5B2A86] hover:border-opacity-0 rounded-full shadow-md group"
+                >
+                  <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 translate-x-full bg-[#5B2A86] group-hover:translate-x-0 ease">
+                    <ArrowLeft size={20} />
+                  </span>
+                  <span className="absolute flex items-center justify-center w-full h-full text-[#5B2A86] transition-all duration-300 transform group-hover:-translate-x-full ease">
+                    Return
+                  </span>
+                  <span className="relative invisible">Return</span>
+                </a>
+              </div>
+              <ChatBox />
             </motion.div>
           ) : (
             <motion.div
               key={"train"}
-              initial={{ x: 700, opacity: 0 }}
+              initial={{ x: 1000, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
-              exit={{ x: 700, opacity: 0 }}
-              transition={{ type: "spring", bounce: 0.25 }}
-              className="z-10"
+              exit={{ x: 1000, opacity: 0 }}
+              transition={{ type: "spring", bounce: 0 }}
+              className="z-10 h-full"
             >
               <div className="flex flex-row justify-between items-center">
                 <p className="text-4xl font-quicksand">{modelName}</p>
@@ -110,7 +117,22 @@ const ModelPage = (props) => {
                   <span className="relative invisible">Proceed</span>
                 </a>
               </div>
-              <div className="grid grid-cols-3 gap-8 mt-8 h-full">
+              <div className="grid grid-cols-3 gap-8 mt-8">
+                <div className="col-span-2 flex flex-col gap-3">
+                  <p className="font-quicksand font-medium text-2xl">
+                    Copy your notes here
+                  </p>
+                  <div className="h-full bg-slate-50 border-[1px] border-[#5B2A86] border-opacity-50 rounded-xl pl-4 pt-4 pb-4 focus:outline-none font-inter">
+                    <textarea
+                      id="notes"
+                      style={{
+                        resize: "none",
+                      }}
+                      onChange={handleNotesChange}
+                      className="h-full w-full focus:outline-none font-inter"
+                    />
+                  </div>
+                </div>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-row justify-between items-center">
                     <p className="font-quicksand font-medium text-base">
@@ -133,16 +155,8 @@ const ModelPage = (props) => {
                       <p className="font-inter text-sm">Upload PDFs</p>
                     </div>
                   </FileUploader>
-                  <a
-                    href="#_"
-                    className="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-bold text-black hover:text-white rounded-md shadow-2xl group"
-                  >
-                    <span className="absolute inset-0 w-full h-full shadow-xl transition duration-300 ease-out opacity-0 bg-gradient-to-br bg-[#5B2A86] group-hover:opacity-100"></span>
-                    <span className="absolute inset-0 w-full h-full border-[1px] border-[#5B2A86] rounded-md"></span>
-                    <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-black rounded-full group-hover:w-56 group-hover:h-56 opacity-5"></span>
-                    <span className="relative">Train Model</span>
-                  </a>
-                  <div className="border-[#5B2A86] border-opacity-30 border-[1px] rounded-xl overflow-hidden">
+
+                  <div className="border-[#5B2A86] border-opacity-50 border-[1px] rounded-xl overflow-hidden">
                     <DroppablePDF
                       name="pdfs"
                       className="p-4 h-48 gap-4 flex flex-col overflow-y-auto"
@@ -160,19 +174,15 @@ const ModelPage = (props) => {
                       })}
                     </DroppablePDF>
                   </div>
-                </div>
-                <div className="col-span-2 flex flex-col gap-3">
-                  <p className="font-quicksand font-medium text-2xl">
-                    Copy your notes here
-                  </p>
-
-                  <textarea
-                    style={{
-                      resize: "none",
-                    }}
-                    onChange={handleNotesChange}
-                    className="h-full bg-slate-50 border-[1px] border-[#5B2A86] border-opacity-30 rounded-xl p-4 focus:outline-none font-inter"
-                  />
+                  <a
+                    href="#_"
+                    className="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-bold text-black hover:text-white rounded-md shadow-2xl group"
+                  >
+                    <span className="absolute inset-0 w-full h-full shadow-xl transition duration-300 ease-out opacity-0 bg-gradient-to-br bg-[#5B2A86] group-hover:opacity-100"></span>
+                    <span className="absolute inset-0 w-full h-full border-[1px] border-[#5B2A86] rounded-md"></span>
+                    <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-black rounded-full group-hover:w-56 group-hover:h-56 opacity-5"></span>
+                    <span className="relative">Train Model</span>
+                  </a>
                 </div>
               </div>
             </motion.div>
