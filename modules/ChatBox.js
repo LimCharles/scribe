@@ -1,10 +1,9 @@
 import { Send } from "react-feather";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import Message from "#components/Message";
 
 const ChatBox = (props) => {
   const [messages, setMessages] = useState([]);
-  const ref = useRef(null);
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -22,10 +21,10 @@ const ChatBox = (props) => {
   };
 
   return (
-    <div ref={ref} className="flex flex-col h-full">
+    <div className="flex flex-col h-full">
       <div
         className={
-          "h-[36rem] border-[1px] border-t-[#5B2A86] border-r-0 border-l-0 border-opacity-30"
+          "h-[36rem] border-[1px] border-t-page border-b-page border-r-0 border-l-0 border-opacity-30"
         }
       >
         <div
@@ -37,7 +36,7 @@ const ChatBox = (props) => {
           })}
         </div>
       </div>
-      <div className="relative self-center w-[36rem] rounded-lg pl-3 py-3 bg-white border-[1px] border-[#5B2A86] border-opacity-30 align-middle shadow-lg flex flex-row mt-5 max-h-24">
+      <div className="relative self-center w-[36rem] rounded-lg pl-3 py-3 bg-white border-[1px] border-page border-opacity-30 align-middle shadow-lg flex flex-row mt-5 max-h-24">
         <div
           id="chatprompt"
           contentEditable
@@ -46,7 +45,7 @@ const ChatBox = (props) => {
           onKeyDown={handleKeyDown}
         />
         <Send
-          className="absolute right-4 bottom-3 text-[#5B2A86] opacity-90 cursor-pointer hover:text-[#00916E]"
+          className="absolute right-4 bottom-3 text-page opacity-90 cursor-pointer hover:text-secondary"
           size={20}
         />
       </div>

@@ -17,7 +17,7 @@ const SideBar = (props) => {
   return (
     <div className="flex flex-row relative grow">
       <div
-        className={`w-48 bg-gradient-to-b from-[#00916E] via-[#00916E] to-[#C3EC83] px-5 pt-5 relative duration-300 flex flex-col z-30`}
+        className={`w-48 bg-gradient-to-b from-secondary via-secondary to-highlight px-5 pt-5 relative duration-300 flex flex-col z-30`}
       >
         <ul className="name">
           {Menus.map((item, index) => (
@@ -27,8 +27,8 @@ const SideBar = (props) => {
               className={`rounded-md px-3 h-10 cursor-pointer text-sm text-white items-center gap-x-4 flex transition-all duration-200 font-quicksand font-medium
                 ${item.gap ? "mt-9" : "mt-2"} ${
                 currentPath.includes(item.title.toLowerCase())
-                  ? "bg-[#5B2A86] bg-opacity-90"
-                  : "hover:bg-[#00755a]"
+                  ? "bg-primary bg-opacity-90"
+                  : "hover:bg-hover hover:text-black"
               } `}
             >
               {item.icon}

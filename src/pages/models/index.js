@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Upload, ArrowRight } from "react-feather";
 import Switch from "react-switch";
 
-import AppPage from "#components/AppPage";
+import AppPage from "#modules/AppPage";
 import DroppablePDF from "#components/DroppablePDF";
 import DraggablePDF from "#components/DraggablePDF";
 
