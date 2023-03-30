@@ -58,7 +58,7 @@ const ModelPage = (props) => {
   };
 
   return (
-    <div className="w-full h-screen flex flex-col">
+    <div className="w-full h-screen flex flex-col overflow-hidden">
       <AppPage>
         <AnimatePresence mode="popLayout">
           {doneTraining ? (
@@ -117,7 +117,7 @@ const ModelPage = (props) => {
                   <span className="relative invisible">Proceed</span>
                 </a>
               </div>
-              <div className="grid grid-cols-3 gap-8 mt-8">
+              <div className="grid grid-cols-3 gap-8 mt-8 h-[90%]">
                 <div className="col-span-2 flex flex-col gap-3">
                   <p className="font-quicksand font-medium text-2xl">
                     Copy your notes here
@@ -156,7 +156,7 @@ const ModelPage = (props) => {
                     </div>
                   </FileUploader>
 
-                  <div className="border-page border-opacity-50 border-[1px] rounded-xl overflow-hidden">
+                  <div className="border-page border-opacity-50 border-[1px] rounded-xl overflow-hidden grow">
                     <DroppablePDF
                       name="pdfs"
                       className="p-4 h-48 gap-4 flex flex-col overflow-y-auto"
