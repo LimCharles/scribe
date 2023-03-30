@@ -1,13 +1,11 @@
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
-const Redirect = () => {
-  const { push } = useRouter();
-
-  useEffect(() => {
-    push("/home");
-  }, []);
-  return <></>;
+const Home = () => {
+  return (
+    <motion.div>
+      <p> HEY</p>
+    </motion.div>
+  );
 };
 
-export default Redirect;
+export default Home;

@@ -78,7 +78,7 @@ const ModelPage = (props) => {
                   onClick={() => {
                     handleProceed();
                   }}
-                  className="cursor-pointer relative inline-flex items-center justify-center px-6 py-2 overflow-hidden font-medium transition duration-300 ease-out border-[1px] border-page hover:border-opacity-0 rounded-full shadow-md group"
+                  className="cursor-pointer relative inline-flex items-center justify-center px-6 py-2 overflow-hidden font-medium transition duration-300 ease-out border-[1px] border-page hover:border-opacity-0 rounded-full group"
                 >
                   <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 translate-x-full bg-page group-hover:translate-x-0 ease">
                     <ArrowLeft size={20} />
@@ -106,7 +106,7 @@ const ModelPage = (props) => {
                   onClick={() => {
                     handleProceed();
                   }}
-                  className="cursor-pointer relative inline-flex items-center justify-center px-6 py-2 overflow-hidden font-medium transition duration-300 ease-out border-[1px] border-page hover:border-opacity-0 rounded-full shadow-md group"
+                  className="cursor-pointer relative inline-flex items-center justify-center px-6 py-2 overflow-hidden font-medium transition duration-300 ease-out border-[1px] border-page hover:border-opacity-0 rounded-full group"
                 >
                   <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-page group-hover:translate-x-0 ease">
                     <ArrowRight size={20} />
@@ -176,9 +176,9 @@ const ModelPage = (props) => {
                   </div>
                   <a
                     href="#_"
-                    className="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-bold text-black hover:text-white rounded-md shadow-2xl group"
+                    className="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-bold text-black hover:text-white rounded-md group"
                   >
-                    <span className="absolute inset-0 w-full h-full shadow-xl transition duration-300 ease-out opacity-0 bg-gradient-to-br bg-page group-hover:opacity-100"></span>
+                    <span className="absolute inset-0 w-full h-full transition duration-300 ease-out opacity-0 bg-gradient-to-br bg-page group-hover:opacity-100"></span>
                     <span className="absolute inset-0 w-full h-full border-[1px] border-page rounded-md"></span>
                     <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-black rounded-full group-hover:w-56 group-hover:h-56 opacity-5"></span>
                     <span className="relative">Train Model</span>

@@ -12,10 +12,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#0A053E",
-        secondary: "#0a205a",
-        highlight: "#123082",
-        page: "#321917",
+        primary: "#321917",
+        secondary: "#7B281D",
+        page: "#B6331D",
         hover: "#F5E9DB",
       },
       fontFamily: {
