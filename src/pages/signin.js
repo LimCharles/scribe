@@ -1,8 +1,12 @@
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+export const getServerSideProps = async (context) => {
+  return {
+    props: {},
+  };
+};
 
 const SignIn = (props) => {
   return (
-    <div>
+    <div id="firebaseui-auth-container">
       <p>HEY</p>
     </div>
   );

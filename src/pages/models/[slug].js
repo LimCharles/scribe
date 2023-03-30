@@ -58,7 +58,7 @@ const ModelPage = (props) => {
   };
 
   return (
-    <div className="w-full h-screen flex flex-col overflow-hidden">
+    <div className="w-full h-screen flex flex-col">
       <AppPage>
         <AnimatePresence mode="popLayout">
           {doneTraining ? (
@@ -122,7 +122,7 @@ const ModelPage = (props) => {
                   <p className="font-quicksand font-medium text-2xl">
                     Copy your notes here
                   </p>
-                  <div className="h-full bg-slate-50 border-[1px] border-page border-opacity-50 rounded-xl pl-4 pt-4 pb-4 focus:outline-none font-inter">
+                  <div className="h-full border-[1px] border-page border-opacity-50 rounded-xl pl-4 pt-4 pb-4 focus:outline-none font-inter">
                     <textarea
                       id="notes"
                       style={{

@@ -24,7 +24,7 @@ const ChatBox = (props) => {
     <div className="flex flex-col h-full">
       <div
         className={
-          "h-[36rem] border-[1px] border-t-page border-b-page border-r-0 border-l-0 border-opacity-30"
+          "h-[90%] border-[1px] border-t-page border-b-page border-r-0 border-l-0 border-opacity-30"
         }
       >
         <div

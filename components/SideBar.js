@@ -24,11 +24,11 @@ const SideBar = (props) => {
             <li
               onClick={() => router.push(item.path)}
               key={index}
-              className={`rounded-md px-3 h-10 cursor-pointer text-sm text-white items-center gap-x-4 flex transition-all duration-200 font-quicksand font-medium
+              className={`rounded-md px-3 h-10 cursor-pointer text-sm items-center gap-x-4 flex transition-all duration-200 font-quicksand font-medium
                 ${item.gap ? "mt-9" : "mt-2"} ${
                 currentPath.includes(item.title.toLowerCase())
-                  ? "bg-hover bg-opacity-90"
-                  : "hover:bg-hover hover:text-black"
+                  ? "bg-hover text-black"
+                  : "hover:bg-hover hover:text-black text-white"
               } `}
             >
               {item.icon}
