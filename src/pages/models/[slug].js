@@ -156,10 +156,11 @@ const ModelPage = (props) => {
                     </div>
                   </FileUploader>
 
-                  <div className="border-page border-opacity-50 border-[1px] rounded-xl overflow-hidden grow">
+                  <div className="border-page border-opacity-50 border-[1px] rounded-xl overflow-hidden grow flex flex-col">
                     <DroppablePDF
+                      id="pdfs"
                       name="pdfs"
-                      className="p-4 h-48 gap-4 flex flex-col overflow-y-auto"
+                      className="p-4 h-1 grow gap-4 flex flex-col overflow-y-auto"
                     >
                       {files.map((file) => {
                         return (
