@@ -12,17 +12,16 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#321917",
-        secondary: "#7B281D",
-        page: "#B6331D",
-        hover: "#F5E9DB",
+        primary: "#2B6A6C",
+        secondary: "#B80D48",
+        tertiary: "#F29724",
+        border: "#D7D7D7",
+        text: "#3D3D3D",
       },
       fontFamily: {
-        cairo: ["Cairo Play", "Display"],
-        quicksand: ["Quicksand", "Display"],
-        inter: ["Inter", "Display"],
+        poppins: ["Poppins", "sans-serif"],
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar")],
 };
