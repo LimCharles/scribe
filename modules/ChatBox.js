@@ -9,7 +9,7 @@ const ChatBox = (props) => {
           height="60"
           fill="none"
         >
-          <g clip-path="url(#a)">
+          <g clipPath="url(#a)">
             <path
               fill="#000"
               d="M15 5c-2.75 0-4.975 2.25-4.975 5L10 50c0 2.75 2.225 5 4.975 5H45c2.75 0 5-2.25 5-5V20L35 5H15Zm17.5 17.5V8.75L46.25 22.5H32.5Z"
@@ -42,7 +42,7 @@ const ChatBox = (props) => {
           </p>
         </div>
       </div>
-      <div className="overflow-y-auto grow border-[1px] px-16 py-7 font-poppins font-medium text-sm max-h-96 scrollbar-thin scrollbar-thumb-primary">
+      <div className="overflow-y-auto grow border-[1px] px-16 py-7 font-poppins font-medium text-sm max-h-80 scrollbar-thin scrollbar-thumb-primary">
         <p>
           I. Introduction <br />
           Chapter 4 examines contemporary development and underdevelopment

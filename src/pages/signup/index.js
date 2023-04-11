@@ -2,7 +2,7 @@ import { signInWithFacebook, signInWithGoogle } from "#lib/Firebase";
 
 const SignUp = () => {
   return (
-    <div className="flex flex-col h-screen w-screen items-center gap-72 p-8">
+    <div className="flex flex-col h-screen w-screen items-center gap-[20%] p-8">
       <div>
         <svg
           xmlns="http://www.w3.org/2000/svg"

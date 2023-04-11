@@ -20,7 +20,7 @@ const Home = () => {
 
   return (
     <motion.div className="h-screen w-screen overflow-x-hidden">
-      <div className="w-full flex flex-col items-start bg-hover h-[70%] justify-between">
+      <div className="w-full flex flex-col items-start bg-hover h-[100%] justify-between">
         <div className="w-full flex flex-row items-center justify-evenly justify-self-start border-b-[1px] py-5">
           <svg
             xmlns="http://www.w3.org/2000/svg"
