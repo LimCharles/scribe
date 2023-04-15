@@ -1,6 +1,90 @@
-import { signInWithFacebook, signInWithGoogle } from "#lib/Firebase";
+import { signInWithGoogle, signInWithFacebook, auth } from "#lib/firebase";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { useState } from "react";
+import { useRouter } from "next/router";
+
+export const getServerSideProps = async (context) => {
+  if (auth.currentUser) {
+    return {
+      redirect: {
+        destination: "/notes",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
 
 const SignUp = () => {
+  // Router
+  const router = useRouter();
+
+  // User Details
+  const [userDetails, setUserDetails] = useState({
+    email: "",
+    password: "",
+  });
+
+  // Auth Error handling
+  const [error, setError] = useState("");
+
+  const handleError = (err) => {
+    switch (err) {
+      case "auth/invalid-email":
+        setError("Invalid Email");
+        break;
+      case "auth/user-disabled":
+        setError("User Disabled");
+        break;
+      case "auth/user-not-found":
+        setError("User Not Found");
+        break;
+      case "auth/wrong-password":
+        setError("Wrong Password");
+        break;
+      case "auth/too-many-requests":
+        setError("Too Many Requests");
+        break;
+      default:
+        setError("Error signing in");
+        break;
+    }
+  };
+
+  // Loading State
+  const [loading, setLoading] = useState(false);
+
+  // Log In Function
+  const signUp = async () => {
+    setLoading(true);
+    await createUserWithEmailAndPassword(
+      auth,
+      userDetails.email,
+      userDetails.password
+    )
+      .then((response) => {
+        router.push("/notes");
+      })
+      .catch((err) => {
+        setLoading(false);
+        handleError(err);
+        console.log(err);
+      });
+  };
+
+  // Auth State Handling
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      router.push("/notes");
+    }
+  });
+
   return (
     <div className="flex flex-col h-screen w-screen items-center gap-[20%] p-8">
       <div>
@@ -23,125 +107,157 @@ const SignUp = () => {
         </svg>
       </div>
 
-      <div className="flex flex-col self-center gap-4 w-[350px]">
+      <div className="relative flex flex-col self-center gap-4 w-[350px]">
+        {loading && (
+          <div className="absolute top-[45%] right-[38%] bg-white rounded-xl shadow-xl flex flex-row items-center justify-center p-4">
+            <div className="w-14 h-14 border-purple-200 border-2 rounded-full"></div>
+            <div className="w-14 h-14 border-purple-700 border-t-2 animate-spin rounded-full absolute"></div>
+          </div>
+        )}
         <p className="text-center font-poppins text-3xl font-semibold text-text">
-          Create your account
+          Create your account!
         </p>
         <div className="flex flex-col gap-2">
           <input
             placeholder="Email address"
             type="email"
-            className="focus:outline-none border-[1px] border-[#737373] rounded-md py-4 px-7 font-poppins"
+            onChange={(e) =>
+              setUserDetails({
+                ...userDetails,
+                email: e.target.value,
+              })
+            }
+            className="focus:outline-none border-[1px] border-[#737373] rounded-md py-4 px-7 font-poppins h-[60px]"
           />
           <input
             placeholder="Password"
             type="password"
+            onChange={(e) => {
+              setUserDetails({
+                ...userDetails,
+                password: e.target.value,
+              });
+            }}
             className="focus:outline-none border-[1px] border-[#737373] rounded-md py-4 px-7 font-poppins"
           />
-          <button type="submit">
-            <p className="text-white font-poppins p-4 bg-gradient-to-r from-primary to-secondary rounded-md">
-              Continue
-            </p>
+
+          <button
+            className="p-4 bg-gradient-to-r from-primary to-secondary rounded-md h-[60px]"
+            type="submit"
+            onClick={() => signUp()}
+          >
+            <p className="text-white font-poppins">Continue</p>
           </button>
         </div>
+        {error && (
+          <p className="text-center text-red-500 font-poppins">{error}</p>
+        )}
         <p className="text-center">
-          Already have an account?<span className="text-primary"> Log in</span>
+          Already have an account?
+          <span
+            className="text-primary cursor-pointer"
+            onClick={() => router.push("/login")}
+          >
+            &nbsp;Log In
+          </span>
         </p>
         <hr className="bg-black border-black" />
-        <button
-          onClick={signInWithGoogle}
-          className="flex flex-row justify-evenly border-[1px] border-[#737373] rounded-md p-4 items-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="25"
-            viewBox="0 0 186.69 190.5"
+        <div className="flex flex-col gap-2">
+          <button
+            onClick={signInWithGoogle}
+            className="flex flex-row justify-evenly border-[1px] border-[#737373] rounded-md p-4 items-center h-[60px]"
           >
-            <g transform="translate(1184.583 765.171)">
-              <path
-                clipPath="none"
-                mask="none"
-                d="M-1089.333-687.239v36.888h51.262c-2.251 11.863-9.006 21.908-19.137 28.662l30.913 23.986c18.011-16.625 28.402-41.044 28.402-70.052 0-6.754-.606-13.249-1.732-19.483z"
-                fill="#4285f4"
-              />
-              <path
-                clipPath="none"
-                mask="none"
-                d="M-1142.714-651.791l-6.972 5.337-24.679 19.223h0c15.673 31.086 47.796 52.561 85.03 52.561 25.717 0 47.278-8.486 63.038-23.033l-30.913-23.986c-8.486 5.715-19.31 9.179-32.125 9.179-24.765 0-45.806-16.712-53.34-39.226z"
-                fill="#34a853"
-              />
-              <path
-                clipPath="none"
-                mask="none"
-                d="M-1174.365-712.61c-6.494 12.815-10.217 27.276-10.217 42.689s3.723 29.874 10.217 42.689c0 .086 31.693-24.592 31.693-24.592-1.905-5.715-3.031-11.776-3.031-18.098s1.126-12.383 3.031-18.098z"
-                fill="#fbbc05"
-              />
-              <path
-                d="M-1089.333-727.244c14.028 0 26.497 4.849 36.455 14.201l27.276-27.276c-16.539-15.413-38.013-24.852-63.731-24.852-37.234 0-69.359 21.388-85.032 52.561l31.692 24.592c7.533-22.514 28.575-39.226 53.34-39.226z"
-                fill="#ea4335"
-                clipPath="none"
-                mask="none"
-              />
-            </g>
-          </svg>
-          <p className="font-poppins text-lg">Continue with Google</p>
-        </button>
-        <button
-          onClick={signInWithFacebook}
-          className="flex flex-row justify-evenly border-[1px] border-[#737373] rounded-md p-4 items-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            width="25"
-            zoomAndPan="magnify"
-            viewBox="0 0 37.5 37.499999"
-            preserveAspectRatio="xMidYMid meet"
-            version="1.0"
-          >
-            <defs>
-              <clipPath id="699f79fdaa">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="25"
+              viewBox="0 0 186.69 190.5"
+            >
+              <g transform="translate(1184.583 765.171)">
                 <path
-                  d="M 0 0 L 37.007812 0 L 37.007812 37.007812 L 0 37.007812 Z M 0 0 "
-                  clipRule="nonzero"
+                  clipPath="none"
+                  mask="none"
+                  d="M-1089.333-687.239v36.888h51.262c-2.251 11.863-9.006 21.908-19.137 28.662l30.913 23.986c18.011-16.625 28.402-41.044 28.402-70.052 0-6.754-.606-13.249-1.732-19.483z"
+                  fill="#4285f4"
                 />
-              </clipPath>
-            </defs>
-            <g clipPath="url(#699f79fdaa)">
+                <path
+                  clipPath="none"
+                  mask="none"
+                  d="M-1142.714-651.791l-6.972 5.337-24.679 19.223h0c15.673 31.086 47.796 52.561 85.03 52.561 25.717 0 47.278-8.486 63.038-23.033l-30.913-23.986c-8.486 5.715-19.31 9.179-32.125 9.179-24.765 0-45.806-16.712-53.34-39.226z"
+                  fill="#34a853"
+                />
+                <path
+                  clipPath="none"
+                  mask="none"
+                  d="M-1174.365-712.61c-6.494 12.815-10.217 27.276-10.217 42.689s3.723 29.874 10.217 42.689c0 .086 31.693-24.592 31.693-24.592-1.905-5.715-3.031-11.776-3.031-18.098s1.126-12.383 3.031-18.098z"
+                  fill="#fbbc05"
+                />
+                <path
+                  d="M-1089.333-727.244c14.028 0 26.497 4.849 36.455 14.201l27.276-27.276c-16.539-15.413-38.013-24.852-63.731-24.852-37.234 0-69.359 21.388-85.032 52.561l31.692 24.592c7.533-22.514 28.575-39.226 53.34-39.226z"
+                  fill="#ea4335"
+                  clipPath="none"
+                  mask="none"
+                />
+              </g>
+            </svg>
+            <p className="font-poppins text-lg">Continue with Google</p>
+          </button>
+          <button
+            onClick={signInWithFacebook}
+            className="flex flex-row justify-evenly border-[1px] border-[#737373] rounded-md p-4 items-center h-[60px]"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              xmlnsXlink="http://www.w3.org/1999/xlink"
+              width="25"
+              zoomAndPan="magnify"
+              viewBox="0 0 37.5 37.499999"
+              preserveAspectRatio="xMidYMid meet"
+              version="1.0"
+            >
+              <defs>
+                <clipPath id="699f79fdaa">
+                  <path
+                    d="M 0 0 L 37.007812 0 L 37.007812 37.007812 L 0 37.007812 Z M 0 0 "
+                    clipRule="nonzero"
+                  />
+                </clipPath>
+              </defs>
+              <g clipPath="url(#699f79fdaa)">
+                <path
+                  fill="#ffffff"
+                  d="M 0 0 L 37.5 0 L 37.5 45 L 0 45 Z M 0 0 "
+                  fillOpacity="1"
+                  fillRule="nonzero"
+                />
+                <path
+                  fill="#ffffff"
+                  d="M 0 0 L 37.5 0 L 37.5 37.5 L 0 37.5 Z M 0 0 "
+                  fillOpacity="1"
+                  fillRule="nonzero"
+                />
+                <path
+                  fill="#ffffff"
+                  d="M 0 0 L 37.5 0 L 37.5 37.5 L 0 37.5 Z M 0 0 "
+                  fillOpacity="1"
+                  fillRule="nonzero"
+                />
+              </g>
               <path
-                fill="#ffffff"
-                d="M 0 0 L 37.5 0 L 37.5 45 L 0 45 Z M 0 0 "
+                fill="#1877f2"
+                d="M 36.925781 18.597656 C 36.925781 8.519531 28.792969 0.347656 18.753906 0.347656 C 8.71875 0.347656 0.582031 8.519531 0.582031 18.597656 C 0.582031 27.707031 7.226562 35.257812 15.914062 36.625 L 15.914062 23.875 L 11.300781 23.875 L 11.300781 18.597656 L 15.914062 18.597656 L 15.914062 14.578125 C 15.914062 10.003906 18.628906 7.476562 22.78125 7.476562 C 24.769531 7.476562 26.847656 7.832031 26.847656 7.832031 L 26.847656 12.324219 L 24.554688 12.324219 C 22.296875 12.324219 21.59375 13.730469 21.59375 15.175781 L 21.59375 18.597656 L 26.632812 18.597656 L 25.828125 23.875 L 21.59375 23.875 L 21.59375 36.625 C 30.28125 35.257812 36.925781 27.707031 36.925781 18.597656 "
                 fillOpacity="1"
                 fillRule="nonzero"
               />
               <path
                 fill="#ffffff"
-                d="M 0 0 L 37.5 0 L 37.5 37.5 L 0 37.5 Z M 0 0 "
+                d="M 25.828125 23.875 L 26.632812 18.597656 L 21.59375 18.597656 L 21.59375 15.175781 C 21.59375 13.730469 22.296875 12.324219 24.554688 12.324219 L 26.847656 12.324219 L 26.847656 7.832031 C 26.847656 7.832031 24.769531 7.476562 22.78125 7.476562 C 18.628906 7.476562 15.914062 10.003906 15.914062 14.578125 L 15.914062 18.597656 L 11.300781 18.597656 L 11.300781 23.875 L 15.914062 23.875 L 15.914062 36.625 C 16.855469 36.773438 17.804688 36.847656 18.753906 36.847656 C 19.722656 36.847656 20.667969 36.773438 21.59375 36.625 L 21.59375 23.875 L 25.828125 23.875 "
                 fillOpacity="1"
                 fillRule="nonzero"
               />
-              <path
-                fill="#ffffff"
-                d="M 0 0 L 37.5 0 L 37.5 37.5 L 0 37.5 Z M 0 0 "
-                fillOpacity="1"
-                fillRule="nonzero"
-              />
-            </g>
-            <path
-              fill="#1877f2"
-              d="M 36.925781 18.597656 C 36.925781 8.519531 28.792969 0.347656 18.753906 0.347656 C 8.71875 0.347656 0.582031 8.519531 0.582031 18.597656 C 0.582031 27.707031 7.226562 35.257812 15.914062 36.625 L 15.914062 23.875 L 11.300781 23.875 L 11.300781 18.597656 L 15.914062 18.597656 L 15.914062 14.578125 C 15.914062 10.003906 18.628906 7.476562 22.78125 7.476562 C 24.769531 7.476562 26.847656 7.832031 26.847656 7.832031 L 26.847656 12.324219 L 24.554688 12.324219 C 22.296875 12.324219 21.59375 13.730469 21.59375 15.175781 L 21.59375 18.597656 L 26.632812 18.597656 L 25.828125 23.875 L 21.59375 23.875 L 21.59375 36.625 C 30.28125 35.257812 36.925781 27.707031 36.925781 18.597656 "
-              fillOpacity="1"
-              fillRule="nonzero"
-            />
-            <path
-              fill="#ffffff"
-              d="M 25.828125 23.875 L 26.632812 18.597656 L 21.59375 18.597656 L 21.59375 15.175781 C 21.59375 13.730469 22.296875 12.324219 24.554688 12.324219 L 26.847656 12.324219 L 26.847656 7.832031 C 26.847656 7.832031 24.769531 7.476562 22.78125 7.476562 C 18.628906 7.476562 15.914062 10.003906 15.914062 14.578125 L 15.914062 18.597656 L 11.300781 18.597656 L 11.300781 23.875 L 15.914062 23.875 L 15.914062 36.625 C 16.855469 36.773438 17.804688 36.847656 18.753906 36.847656 C 19.722656 36.847656 20.667969 36.773438 21.59375 36.625 L 21.59375 23.875 L 25.828125 23.875 "
-              fillOpacity="1"
-              fillRule="nonzero"
-            />
-          </svg>
-          <p className="font-poppins text-lg">Continue with Facebook</p>
-        </button>
+            </svg>
+            <p className="font-poppins text-lg">Continue with Facebook</p>
+          </button>
+        </div>
       </div>
     </div>
   );
