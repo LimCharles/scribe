@@ -127,7 +127,7 @@ const SignUp = () => {
                 email: e.target.value,
               })
             }
-            className="focus:outline-none border-[1px] border-[#737373] rounded-md py-4 px-7 font-poppins h-[60px]"
+            className="focus:outline-none border-[1px] border-[#737373] rounded-md px-7 font-poppins h-[60px]"
           />
           <input
             placeholder="Password"
@@ -138,7 +138,7 @@ const SignUp = () => {
                 password: e.target.value,
               });
             }}
-            className="focus:outline-none border-[1px] border-[#737373] rounded-md py-4 px-7 font-poppins"
+            className="focus:outline-none border-[1px] border-[#737373] rounded-md px-7 font-poppins h-[60px]"
           />
 
           <button
