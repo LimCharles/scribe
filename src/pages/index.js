@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { auth } from "#lib/firebase";
+import { auth } from "#lib/Firebase";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/router";
-
 import ChatBox from "#modules/ChatBox";
 
 const Home = () => {
