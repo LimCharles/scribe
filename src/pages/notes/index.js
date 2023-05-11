@@ -2,12 +2,27 @@ import { useState } from "react";
 import Select from "react-select";
 import { FileUploader } from "react-drag-drop-files";
 const superagent = require("superagent");
+import { onAuthStateChanged } from "firebase/auth";
+import { useRouter } from "next/router";
+import { auth } from "#lib/firebase";
 
 const Notes = () => {
+  // Router
+  const router = useRouter();
+  onAuthStateChanged(auth, (user) => {
+    if (!user && !auth.currentUser) {
+      router.push("/signup");
+    }
+  });
+
+  // Preferences
   const [preferences, setPreferences] = useState({
     length: null,
     pages: null,
   });
+
+  // Loading
+  const [loading, setLoading] = useState(true);
 
   // Pages Select Handler
   const handlePageChange = (selectedOption) => {
@@ -26,6 +41,7 @@ const Notes = () => {
   };
 
   const summarizePDF = async () => {
+    setLoading(true);
     try {
       superagent
         .post("/api/notes/summarize")
@@ -95,6 +111,11 @@ const Notes = () => {
                   Add or Drag a File
                 </div>
               </FileUploader>
+              {PDF && (
+                <p className="font-poppins text-xs text-green-500">
+                  File uploaded
+                </p>
+              )}
             </div>
             <div className="flex flex-col gap-2 w-72">
               <div className="flex flex-row items-end justify-between">
@@ -168,56 +189,63 @@ const Notes = () => {
             </button>
           </div>
         </div>
-        <div className="flex flex-row items-center justify-center grow gap-16">
-          <div className="flex flex-col gap-5 items-center">
-            <p className="text-[#898989] font-semibold text-2xl">
-              Upload a File
-            </p>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="56"
-              height="68"
-              fill="none"
-            >
-              <path
-                fill="#898989"
-                d="M16 52h24V28h16L28 0 0 28h16v24ZM0 60h56v8H0v-8Z"
-              />
-            </svg>
+        {loading ? (
+          <div className="absolute top-[45%] right-[38%] bg-white rounded-xl shadow-xl flex flex-row items-center justify-center p-4">
+            <div className="w-32 h-32 border-purple-200 border-2 rounded-full"></div>
+            <div className="w-32 h-32 border-purple-700 border-t-2 animate-spin rounded-full absolute"></div>
           </div>
-          <div className="flex flex-col gap-5 items-center">
-            <p className="text-[#898989] font-semibold text-2xl">
-              Select Preferences
-            </p>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="73"
-              height="73"
-              fill="none"
-            >
-              <path
-                fill="#898989"
-                d="M0 58v15h15l44.24-44.24-15-15L0 58Zm70.84-40.84a3.983 3.983 0 0 0 0-5.64l-9.36-9.36a3.983 3.983 0 0 0-5.64 0l-7.32 7.32 15 15 7.32-7.32Z"
-              />
-            </svg>
+        ) : (
+          <div className="flex flex-row items-center justify-center grow gap-16">
+            <div className="flex flex-col gap-5 items-center">
+              <p className="text-[#898989] font-semibold text-2xl">
+                Upload a File
+              </p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="56"
+                height="68"
+                fill="none"
+              >
+                <path
+                  fill="#898989"
+                  d="M16 52h24V28h16L28 0 0 28h16v24ZM0 60h56v8H0v-8Z"
+                />
+              </svg>
+            </div>
+            <div className="flex flex-col gap-5 items-center">
+              <p className="text-[#898989] font-semibold text-2xl">
+                Select Preferences
+              </p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="73"
+                height="73"
+                fill="none"
+              >
+                <path
+                  fill="#898989"
+                  d="M0 58v15h15l44.24-44.24-15-15L0 58Zm70.84-40.84a3.983 3.983 0 0 0 0-5.64l-9.36-9.36a3.983 3.983 0 0 0-5.64 0l-7.32 7.32 15 15 7.32-7.32Z"
+                />
+              </svg>
+            </div>
+            <div className="flex flex-col gap-5 items-center">
+              <p className="text-[#898989] font-semibold text-2xl">
+                Automatic Notes
+              </p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="80"
+                height="76"
+                fill="none"
+              >
+                <path
+                  fill="#898989"
+                  d="M40 61.08 64.72 76l-6.56-28.12L80 28.96l-28.76-2.44L40 0 28.76 26.52 0 28.96l21.84 18.92L15.28 76 40 61.08Z"
+                />
+              </svg>
+            </div>
           </div>
-          <div className="flex flex-col gap-5 items-center">
-            <p className="text-[#898989] font-semibold text-2xl">
-              Automatic Notes
-            </p>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="80"
-              height="76"
-              fill="none"
-            >
-              <path
-                fill="#898989"
-                d="M40 61.08 64.72 76l-6.56-28.12L80 28.96l-28.76-2.44L40 0 28.76 26.52 0 28.96l21.84 18.92L15.28 76 40 61.08Z"
-              />
-            </svg>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
