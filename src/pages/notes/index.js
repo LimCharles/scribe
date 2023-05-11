@@ -22,7 +22,7 @@ const Notes = () => {
   });
 
   // Loading
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Pages Select Handler
   const handlePageChange = (selectedOption) => {
