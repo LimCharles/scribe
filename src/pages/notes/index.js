@@ -4,7 +4,7 @@ import { FileUploader } from "react-drag-drop-files";
 const superagent = require("superagent");
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/router";
-import { auth } from "#lib/firebase";
+import { auth } from "#lib/Firebase";
 
 const Notes = () => {
   // Router

@@ -1,4 +1,4 @@
-import { signInWithGoogle, signInWithFacebook, auth } from "#lib/firebase";
+import { signInWithGoogle, signInWithFacebook, auth } from "#lib/Firebase";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { useState } from "react";
 import { useRouter } from "next/router";
