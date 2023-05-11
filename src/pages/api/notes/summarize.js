@@ -3,7 +3,7 @@ const pdf = require("pdf-parse");
 const { Configuration, OpenAIApi } = require("openai");
 
 const configuration = new Configuration({
-  apiKey: "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",
+  apiKey: process.env.OPEN_AI_KEY,
 });
 
 const openai = new OpenAIApi(configuration);
@@ -40,7 +40,6 @@ const handler = async (req, res) => {
                 console.log(err.response.data);
               });
 
-            console.log(summary);
             const summaryText = summary.choices[0].text;
 
             res.status(200).end(summaryText);
