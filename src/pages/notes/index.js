@@ -36,6 +36,8 @@ const Notes = () => {
   const fileTypes = ["PDF"];
   const [PDF, setPDF] = useState(null);
 
+  const [text, setText] = useState("");
+
   const uploadPDF = (file) => {
     setPDF(file);
   };
@@ -50,13 +52,14 @@ const Notes = () => {
         .field("pages", preferences["pages"])
         .set("accept", "json")
         .then((res) => {
-          console.log(res);
+          setText(res.text);
+          setLoading(false);
         })
         .catch((err) => {
-          console.log(err);
+          setLoading(false);
         });
     } catch (err) {
-      console.log(err);
+      setLoading(false);
     }
   };
 
@@ -194,6 +197,8 @@ const Notes = () => {
             <div className="w-32 h-32 border-purple-200 border-2 rounded-full"></div>
             <div className="w-32 h-32 border-purple-700 border-t-2 animate-spin rounded-full absolute"></div>
           </div>
+        ) : text ? (
+          <div className="flex flex-col px-4 py-4">{text}</div>
         ) : (
           <div className="flex flex-row items-center justify-center grow gap-16">
             <div className="flex flex-col gap-5 items-center">
