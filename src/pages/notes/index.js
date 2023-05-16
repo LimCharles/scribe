@@ -15,26 +15,11 @@ const Notes = () => {
     }
   });
 
-  // Preferences
-  const [preferences, setPreferences] = useState({
-    length: null,
-    pages: null,
-  });
+  // Citation
+  const [citation, setCitation] = useState("");
 
   // Loading
   const [loading, setLoading] = useState(false);
-
-  // Pages Select Handler
-  const handlePageChange = (selectedOption) => {
-    setPreferences({
-      ...preferences,
-      length: selectedOption.value,
-    });
-  };
-
-  // PDF File
-  const fileTypes = ["PDF"];
-  const [PDF, setPDF] = useState(null);
 
   const [text, setText] = useState("");
 
@@ -47,10 +32,8 @@ const Notes = () => {
     try {
       superagent
         .post("/api/notes/summarize")
-        .attach("file", PDF)
-        .field("length", preferences["length"])
-        .field("pages", preferences["pages"])
-        .set("accept", "json")
+        .send({ citation: citation })
+        .set("Accept", "json")
         .then((res) => {
           setText(res.text);
           setLoading(false);
@@ -84,104 +67,22 @@ const Notes = () => {
               clipRule="evenodd"
             />
           </svg>
-          <div className="flex flex-col h-full w-full gap-8">
-            <div className="flex flex-col gap-2 w-72">
-              <p className="font-poppins text-xl font-medium">File Upload</p>
-              <FileUploader
-                handleChange={uploadPDF}
-                name="PDF"
-                types={fileTypes}
-              >
-                <div className="flex flex-row items-center font-poppins text-sm gap-4 text-[#B1B1B1] rounded-md h-[48px] pl-8 pr-16 py-2 bg-[#ECF2F2] cursor-pointer">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="31"
-                    height="31"
-                    fill="none"
-                  >
-                    <g clipPath="url(#a)">
-                      <path
-                        fill="#B1B1B1"
-                        d="M16.792 9.042h-2.584v5.166H9.042v2.584h5.166v5.166h2.584v-5.166h5.166v-2.584h-5.166V9.042ZM15.5 2.583C8.37 2.583 2.583 8.37 2.583 15.5S8.37 28.417 15.5 28.417 28.417 22.63 28.417 15.5 22.63 2.583 15.5 2.583Zm0 23.25c-5.696 0-10.333-4.637-10.333-10.333 0-5.696 4.637-10.333 10.333-10.333 5.696 0 10.333 4.637 10.333 10.333 0 5.696-4.637 10.333-10.333 10.333Z"
-                      />
-                    </g>
-                    <defs>
-                      <clipPath id="a">
-                        <path fill="#fff" d="M0 0h31v31H0z" />
-                      </clipPath>
-                    </defs>
-                  </svg>
-                  Add or Drag a File
-                </div>
-              </FileUploader>
-              {PDF && (
-                <p className="font-poppins text-xs text-green-500">
-                  File uploaded
-                </p>
-              )}
-            </div>
-            <div className="flex flex-col gap-2 w-72">
+          <div className="flex flex-col h-full w-96 gap-8">
+            <div className="flex flex-col gap-2 w-full">
               <div className="flex flex-row items-end justify-between">
-                <p className="font-poppins text-xl font-medium">Pages</p>
-                <p className="text-xs font-poppins text-[#B1B1B1]">
-                  Number Input
-                </p>
+                <p className="font-poppins text-xl font-medium">Citation</p>
               </div>
 
-              <input
-                placeholder="e.g 3-14"
+              <textarea
+                placeholder="Citation"
                 type="number"
-                onChange={(e) =>
-                  setPreferences({
-                    ...preferences,
-                    pages: e.target.value,
-                  })
-                }
-                className="focus:outline-none border-[1px] border-[#737373] rounded-md px-7 font-poppins text-sm h-[48px]"
-              />
-            </div>
-            <div className="flex flex-col gap-2 w-72">
-              <div className="flex flex-row items-end justify-between">
-                <p className="font-poppins text-xl font-medium">
-                  Length Preference
-                </p>
-              </div>
-
-              <Select
-                placeholder="Length"
-                options={[
-                  { value: "short", label: "Short" },
-                  { value: "medium", label: "Medium" },
-                  { value: "long", label: "Long" },
-                ]}
-                styles={{
-                  control: (baseStyles, state) => ({
-                    ...baseStyles,
-                    "&:hover": {
-                      outline: "none", // Remove outline on hover
-                    },
-                    "&:focus": {
-                      outline: "none", // Remove outline on focus
-                    },
-                    "&:active": {
-                      outline: "none", // Remove outline on active
-                    },
-                    boxShadow: "none",
-                    border: "1px solid #737373",
-                    borderRadius: "6px",
-                    paddingLeft: "15px",
-                    fontFamily: "Poppins",
-                    fontSize: "0.875rem",
-                    height: "48px",
-                  }),
-                  menu: (baseStyles, state) => ({
-                    ...baseStyles,
-                    fontFamily: "Poppins",
-                  }),
+                onChange={(e) => {
+                  setCitation(e.target.value);
                 }}
-                onChange={handlePageChange}
+                className="focus:outline-none border-[1px] border-[#737373] rounded-md px-4 py-3 resize-none font-poppins text-sm h-[180px] w-full"
               />
             </div>
+
             <button
               onClick={() => {
                 summarizePDF();
